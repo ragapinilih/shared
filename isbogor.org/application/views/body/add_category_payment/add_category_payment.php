@@ -13,7 +13,7 @@
 							<li class="divider"></li>								
 							<?php 
 								foreach ($payment_method as $key => $value) {
-									echo '<li><a href="' . site_url("payment/add_data/name/" . $value["name"]) . '">' . $value["name"] . '</a>';
+									echo '<li><a href="' . site_url("payment/add_data/page/" . $value["page"]) . '">' . $value["name"] . '</a>';
 								}
 							?>
 						</ul>
