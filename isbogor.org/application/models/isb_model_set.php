@@ -71,5 +71,10 @@ class Isb_model_set extends CI_Model {
             $this->ClearResult();
         }
 	}
+
+	function DeleteById($parameter){
+		$del = $this->db->delete($parameter['table'], $parameter['where']); 
+		return $del;
+	}
 }
 ?>

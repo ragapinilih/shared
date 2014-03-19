@@ -13,11 +13,29 @@
 							<li class="divider"></li>								
 							<?php 
 								foreach ($payment_method as $key => $value) {
-									echo '<li><a href="' . site_url("payment/add_data/name/" . $value["name"]) . '">' . $value["name"] . '</a>';
+									echo '<li><a href="' . site_url("payment/add_data/page/" . $value["page"]) . '">' . $value["name"] . '</a>';
 								}
 							?>
 						</ul>
-					</li>															
+					</li>
+					<li><a href="#">Insert Data</a>					
+						<ul>
+							<?php 
+								foreach ($payment_method as $key => $value) {
+									echo '<li><a href="' . site_url("payment_insert/index/page/" . $value["page"]) . '">' . $value["name"] . '</a>';
+								}
+							?>
+						</ul>
+					</li>
+					<li><a href="#">View Data</a>					
+						<ul>
+							<?php 
+								foreach ($payment_method as $key => $value) {
+									echo '<li><a href="' . site_url("view_data/index/page/" . $value["page"]) . '">' . $value["name"] . '</a>';
+								}
+							?>
+						</ul>
+					</li>																	
 					<li><a href="<?php echo site_url('logout')?>">Logout</a></li>
 					<li><a href="#<?php site_url('user/profile')?>"><?php echo $username; ?></a></li>
 				</ul>
@@ -30,8 +48,9 @@
 		<div class="row">
 			<div class="span5">					
 				<h4 class="title"><span class="text"><strong>Payment</strong> Add Data</span></h4>
-
-				<div class="control-group" id="field_group">
+				<h2><?php echo $category_name; ?></h2>
+				<br>
+				<div class="control-group">
 			        <label class="control-label" for="field_name">Field Name</label>
 			        <input type="text" id="field_name" size="20" name="field_name" value="" placeholder="Input Field Name" /></label>
 				</div>
@@ -40,7 +59,21 @@
 				<div class="control-group">
 					<input tabindex="3" class="btn btn-inverse large" type="submit" id="generateData" value="Generate New Field">
 					<hr>
-					<font color="#991100"><?php echo $error_message; ?></font>
+				</div>
+
+				<?php 	
+						echo $form_open_save_configuration; 
+				 		echo $smiH; 
+				 		echo $fuH;
+				 ?>
+				<div id="field_group"></div>
+
+				<select multiple="multiple" name="avaible_field[]" id="avaible_field">
+				</select>
+				<div class="control-group">
+					<input tabindex="3" class="btn btn-inverse large" type="submit" id="save_configuration" value="Save Configuration">
+					<hr>
+					<span id="error_message"><font color="#991100"><?php echo $error_message; ?></font></span>
 				</div>
 
 			</div>
@@ -48,11 +81,7 @@
 	</section>
 
 	<section id="footer-bar">
-	<select class="hidden" multiple="multiple" name="avaible_field[]" id="avaible_field">
-		<option value="2">IT</option>
-		<option value="3">Tata Usaha</option>
-		<option value="4">Marketing</option>
-	</select>
+	
 		<div class="row">
 			<div class="span4">
 				<h4>My Account</h4>

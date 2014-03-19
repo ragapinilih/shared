@@ -42,7 +42,7 @@ class Main extends CI_Controller {
 	private function _get_payment_method()
 	{
 		
-		$params['field'] = "MS.id, MS.name";
+		$params['field'] = "MS.id, MS.name, MS.page";
 		
 		$params['table'] = "Master_Sub_Module MS";
 		

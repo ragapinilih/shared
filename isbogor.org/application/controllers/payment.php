@@ -14,7 +14,7 @@ class Payment extends CI_Controller {
         $this->load->helper(array('form', 'url', 'html'));
    		$this->load->library(array('session', 'form_validation', 'encrypt', 'base_design'));
 
-   		$this->output->enable_profiler(TRUE);
+   		$this->output->enable_profiler(FALSE);
    	}
 	
 	public function index()
@@ -79,7 +79,7 @@ class Payment extends CI_Controller {
 				if ($insert_data['code'])
 				{
 					$body['error_message'] = "Success created Category. ";
-					$body['payment_method'][] = array('id' => $insert_data['id'], 'name' => $insert_data['name']);
+					$body['payment_method'][] = array('id' => $insert_data['id'], 'name' => $insert_data['name'], 'page' => $insert_data['page']);
 				}
 				else
 				{
@@ -111,7 +111,7 @@ class Payment extends CI_Controller {
 			
 			$params = array();
 
-			$params['field'] = $type;
+			$params['field'] = $type . ",name, MS.id";
 			$params['table'] = "Master_Sub_Module MS";
 			$params['join'][] = array('table' => "Master_Role_Reference MRR", 'condition' => "MS.id = MRR.subModuleId");
 			$params['where'][$type] = $value_url;
@@ -134,14 +134,20 @@ class Payment extends CI_Controller {
 
 			$body['username'] = $this->session->userdata('username');
 
-			$payment_method = $this->_get_payment_method();
+			$body['form_open_save_configuration'] = form_open('payment/save_configuration#form');
+
+			$payment_method = $this->_get_payment_method($type);
 			$body = array_merge($body, $payment_method);
 
 			$cbd = $this->base_design->get_cbd_all_property();
 			$h['cbd'] = array('link' => $cbd['link']);
 			$f_a['cbd'] = array('script' => $cbd['script']);
 			
-			$body['error_message'] = "";
+			$body['error_message'] = (!empty($_REQUEST['message'])) ? urldecode($_REQUEST['message']) : "";
+			$body['category_name'] = ucwords(strtolower($is_method_exist[0]['name']));
+
+			$body['smiH'] = form_hidden('subModuleId', $is_method_exist[0]['id']);
+			$body['fuH'] = form_hidden('fuH', current_url());
 
 			$helper_html = array('<span class="hide" id="templatedirectory">' . base_url("asset/custom_1/themes/images/gotop.png") . '</span>');
 			$body['helper_html'] = implode(" ", $helper_html);
@@ -156,13 +162,51 @@ class Payment extends CI_Controller {
 		}
 	}
 
+	public function save_configuration()
+	{
+		$avaible_field = $this->input->post('avaible_field');
+		$subModuleId = $this->input->post('subModuleId');;
+		$urlBefore = $this->input->post('fuH');;
+		$field_config = array();
+		$params = array();	
+
+		$params['field'] = "id";
+		$params['table'] = "configuration_field_submodule";
+		$params['where']["subModuleId"] = $subModuleId;
+
+		$currentConfig = $this->isb_model_get->GetData($params);
+
+		if (!empty($currentConfig)) 
+		{
+			$params = array();
+			$params['table'] = "configuration_field_submodule";
+			$params['where']['subModuleId'] = $subModuleId;
+			$this->isb_model_set->DeleteById($params);
+		}
+
+		$params = array();	
+		$params['tableName'] = "configuration_field_submodule";
+		foreach ($avaible_field as $key => $value) {
+			$label = str_replace('_', ' ', $value);
+			array_push($field_config, array("subModuleId" => $subModuleId, "label" => $label, "field" => $value));
+		}
+
+		$params['value'] = $field_config;
+
+		$this->isb_model_set->InsertBatch($params);
+
+		redirect($urlBefore . "?message=success Save configuration");
+	}
+
 
 	// function private ------------------------------------------------------------------------------
 
-	private function _get_payment_method()
+	private function _get_payment_method($type = NULL)
 	{
+
+		if (is_null($type)) $type = "page";
 		
-		$params['field'] = "MS.id, MS.name";
+		$params['field'] = "MS.id, MS.name, MS.page";
 		
 		$params['table'] = "Master_Sub_Module MS";
 		
@@ -214,7 +258,9 @@ class Payment extends CI_Controller {
 			
 			$params['tableName'] = "Master_Sub_Module";	
 			
-			$params['value'] = array("name" => $category, 'moduleId' => $module[0]['id'], 'timeCreated' => date("Y-m-d H:i:s"));
+			$page = str_replace(' ', '_', $category);
+
+			$params['value'] = array("name" => $category, 'page' => $page, 'moduleId' => $module[0]['id'], 'timeCreated' => date("Y-m-d H:i:s"));
 
 			$created_sub_module = $this->isb_model_set->AddData($params);
 
@@ -242,6 +288,7 @@ class Payment extends CI_Controller {
 				$status['code'] = TRUE;
 				$status['id'] = $subModuleId;
 				$status['name'] = $category;
+				$status['page'] = $page;
 			}	
 			
 		}

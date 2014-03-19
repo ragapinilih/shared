@@ -13,11 +13,29 @@
 								<li class="divider"></li>								
 								<?php 
 									foreach ($payment_method as $key => $value) {
-										echo '<li><a href="' . site_url("payment/add_data/name/" . $value["name"]) . '">' . $value["name"] . '</a>';
+										echo '<li><a href="' . site_url("payment/add_data/page/" . $value["page"]) . '">' . $value["name"] . '</a>';
 									}
 								?>
 							</ul>
-						</li>															
+						</li>	
+						<li><a href="#">Insert Data</a>					
+							<ul>
+								<?php 
+									foreach ($payment_method as $key => $value) {
+										echo '<li><a href="' . site_url("payment_insert/index/page/" . $value["page"]) . '">' . $value["name"] . '</a>';
+									}
+								?>
+							</ul>
+						</li>
+						<li><a href="#">View Data</a>					
+							<ul>
+								<?php 
+									foreach ($payment_method as $key => $value) {
+										echo '<li><a href="' . site_url("view_data/index/page/" . $value["page"]) . '">' . $value["name"] . '</a>';
+									}
+								?>
+							</ul>
+						</li>																
 						<li><a href="<?php echo site_url('logout')?>">Logout</a></li>
 						<li><a href="#<?php site_url('user/profile')?>"><?php echo $username; ?></a></li>
 					</ul>
