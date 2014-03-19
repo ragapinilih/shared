@@ -14,7 +14,7 @@ class Payment extends CI_Controller {
         $this->load->helper(array('form', 'url', 'html'));
    		$this->load->library(array('session', 'form_validation', 'encrypt', 'base_design'));
 
-   		$this->output->enable_profiler(TRUE);
+   		$this->output->enable_profiler(FALSE);
    	}
 	
 	public function index()

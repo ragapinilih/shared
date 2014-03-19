@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2014 at 09:26 PM
+-- Generation Time: Mar 19, 2014 at 10:24 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `configuration_field_submodule` (
   `field` varchar(200) NOT NULL DEFAULT '',
   `timeUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `configuration_field_submodule`
@@ -48,7 +48,12 @@ INSERT INTO `configuration_field_submodule` (`id`, `subModuleId`, `label`, `fiel
 (19, 39, 'nis', 'nis', '2014-03-17 15:26:20'),
 (20, 39, 'name', 'name', '2014-03-17 15:26:20'),
 (21, 39, 'address', 'address', '2014-03-17 15:26:20'),
-(22, 39, 'phonenumber', 'phonenumber', '2014-03-17 15:26:20');
+(22, 39, 'phonenumber', 'phonenumber', '2014-03-17 15:26:20'),
+(29, 1, 'username', 'username', '2014-03-19 07:31:53'),
+(30, 1, 'password', 'password', '2014-03-19 07:31:53'),
+(31, 3, 'info', 'info', '2014-03-19 07:33:05'),
+(32, 3, 'pembayaran', 'pembayaran', '2014-03-19 07:33:05'),
+(33, 3, 'total', 'total', '2014-03-19 07:33:05');
 
 -- --------------------------------------------------------
 
@@ -93,23 +98,24 @@ CREATE TABLE IF NOT EXISTS `data_payment` (
   `fieldName` varchar(100) NOT NULL DEFAULT '',
   `value` varchar(999) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `data_payment`
 --
 
 INSERT INTO `data_payment` (`id`, `groupId`, `fieldName`, `value`) VALUES
-(1, 0, 'id', '1'),
-(2, 0, 'username', 'Marianus'),
-(3, 1, 'id', '1'),
-(4, 1, 'username', 'Marianus'),
-(5, 2, 'nama_actor', 'Satria'),
-(6, 2, 'lawan_actor', 'Soraya'),
-(7, 2, 'jumlah_pasangan', '2'),
-(8, 1, 'nis', '1234'),
-(9, 1, 'nama', 'Marianus'),
-(10, 1, 'alamat', 'Jl . Legong 1');
+(1, 1, 'name', 'Marianus Desato Paulo Djemana'),
+(2, 1, 'address', 'Jl. Legong 1 No. 18 Depok 2 Utara'),
+(3, 1, 'date_of_birth', '8 September 2012'),
+(4, 2, 'name', 'Raga Pinilih'),
+(5, 2, 'address', 'Jalan Benda Atas'),
+(6, 2, 'date_of_birth', '7 November 1990'),
+(7, 3, 'username', 'ari'),
+(8, 3, 'password', 'manusia'),
+(9, 1, 'info', 'Pembayaran Toefl'),
+(10, 1, 'pembayaran', '1000000000'),
+(11, 1, 'total', '1000000000');
 
 -- --------------------------------------------------------
 
@@ -132,7 +138,9 @@ CREATE TABLE IF NOT EXISTS `isb_sessions` (
 --
 
 INSERT INTO `isb_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('e5ce3504d6da70b31b1129d3670d18ec', '::1', 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395070558, '');
+('11ddc421ddc659914e5e40438a4f7f9a', '::1', 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395151737, 'a:8:{s:9:"user_data";s:0:"";s:8:"username";s:5:"admin";s:5:"email";s:20:"aridjemana@gmail.com";s:6:"roleId";s:1:"1";s:8:"roleName";s:11:"Super Admin";s:10:"first_name";s:5:"Super";s:9:"last_name";s:5:"Admin";s:9:"logged_in";b:1;}'),
+('2c50db7222ac943d8a792bec95edfa5a', '::1', 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395156252, ''),
+('79b52c7b88d7e6a9af1f739771ebcdc8', '::1', 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36', 1395214431, '');
 
 -- --------------------------------------------------------
 
@@ -144,19 +152,21 @@ CREATE TABLE IF NOT EXISTS `master_data_payment` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `groupId` int(10) unsigned NOT NULL DEFAULT '0',
   `subModuleId` int(12) NOT NULL DEFAULT '0',
+  `title` varchar(255) NOT NULL DEFAULT '',
   `timeInsert` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `timeUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `master_data_payment`
 --
 
-INSERT INTO `master_data_payment` (`id`, `groupId`, `subModuleId`, `timeInsert`, `timeUpdate`) VALUES
-(1, 1, 38, '2014-03-17 14:57:56', '2014-03-17 14:57:56'),
-(2, 2, 38, '2014-03-17 15:17:54', '2014-03-17 15:17:54'),
-(3, 1, 39, '2014-03-17 15:24:20', '2014-03-17 15:24:20');
+INSERT INTO `master_data_payment` (`id`, `groupId`, `subModuleId`, `title`, `timeInsert`, `timeUpdate`) VALUES
+(1, 1, 1, 'Marianus Desato Paulo Djemana', '2014-03-18 12:59:47', '2014-03-18 12:59:47'),
+(2, 2, 1, 'Raga Pinilih', '2014-03-18 15:21:49', '2014-03-18 15:21:49'),
+(3, 3, 1, 'ari', '2014-03-19 07:32:02', '2014-03-19 07:32:02'),
+(4, 1, 3, 'Pembayaran Toefl', '2014-03-19 07:33:32', '2014-03-19 07:33:32');
 
 -- --------------------------------------------------------
 
@@ -213,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `master_role_reference` (
   `roleIdReference` int(10) unsigned NOT NULL DEFAULT '0',
   `subModuleId` int(12) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
 
 --
 -- Dumping data for table `master_role_reference`
@@ -225,7 +235,15 @@ INSERT INTO `master_role_reference` (`id`, `roleIdReference`, `subModuleId`) VAL
 (45, 3, 38),
 (46, 4, 38),
 (47, 1, 39),
-(48, 3, 39);
+(48, 3, 39),
+(49, 1, 1),
+(50, 2, 1),
+(51, 3, 1),
+(52, 1, 2),
+(53, 2, 2),
+(54, 4, 2),
+(55, 1, 3),
+(56, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -240,15 +258,16 @@ CREATE TABLE IF NOT EXISTS `master_sub_module` (
   `page` varchar(100) NOT NULL,
   `timeCreated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `master_sub_module`
 --
 
 INSERT INTO `master_sub_module` (`id`, `moduleId`, `name`, `page`, `timeCreated`) VALUES
-(38, 1, 'Filim Bokep', 'Filim_Bokep', '2014-03-15 22:28:36'),
-(39, 1, 'TK', 'TK', '2014-03-17 15:23:08');
+(1, 1, 'TK', 'TK', '2014-03-18 12:25:24'),
+(2, 1, 'SD', 'SD', '2014-03-19 07:31:19'),
+(3, 1, 'Invoice', 'Invoice', '2014-03-19 07:32:34');
 
 -- --------------------------------------------------------
 

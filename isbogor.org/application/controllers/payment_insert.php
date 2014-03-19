@@ -14,7 +14,7 @@ class Payment_insert extends CI_Controller {
         $this->load->helper(array('form', 'url', 'html'));
    		$this->load->library(array('session', 'form_validation', 'encrypt', 'base_design'));
 
-   		$this->output->enable_profiler(TRUE);
+   		$this->output->enable_profiler(FALSE);
    	}
 	
 	public function index($type = NULL, $value_url = NULL)
@@ -32,6 +32,8 @@ class Payment_insert extends CI_Controller {
 			if (empty($is_method_exist)) redirect('Error_404');
 
 			$h['title'] = "Insert Data";
+
+			$titleField = array();
 
 			$body['username'] = $this->session->userdata('username');
 
@@ -68,6 +70,9 @@ class Payment_insert extends CI_Controller {
 			$body['form'] .= form_open(current_url());
 
 			foreach ($fieldSet as $key => $value) {
+				
+				$titleField[] = $value['field'];
+
 				$this->form_validation->set_rules($value['field'], $value['field'], 'required');
 
 				$body['form'] .= '<div class="control-group"> ';
@@ -77,7 +82,7 @@ class Payment_insert extends CI_Controller {
 				              'name'        => $value['field'],
 				              'id'          => $value['field'],
 				              'value'       => $this->input->post($value['field']),
-				              'placeholder' => 'Input' . $value['label'],
+				              'placeholder' => 'Input ' . $value['label'],
 				            );
 
 				$body['form'] .= form_input($form_field);
@@ -113,9 +118,16 @@ class Payment_insert extends CI_Controller {
 				if (empty($getGroupId)) $groupIds = 1;
 				else $groupIds = $getGroupId[0]['groupId'] + 1;
 
+				$titles = "";
+
+				foreach ($titleField as $key => $value) {
+					$dataField = $this->input->post($value);
+					if (empty($titles)) $titles = $dataField;
+				}
+
 				$params = array();
 				$params['tableName'] = "Master_Data_Payment";
-				$params['value'] = array('groupId' => $groupIds, 'subModuleId' => $is_method_exist[0]['id'], 'timeInsert' => date('Y-m-d H:i:s'));
+				$params['value'] = array('groupId' => $groupIds, 'subModuleId' => $is_method_exist[0]['id'], 'title' => $titles, 'timeInsert' => date('Y-m-d H:i:s'));
 				$this->isb_model_set->AddData($params);
 
 				$data_insert = array();
